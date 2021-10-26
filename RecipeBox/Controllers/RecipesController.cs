@@ -1,52 +1,52 @@
-// using Microsoft.AspNetCore.Mvc.Rendering;
-// using Microsoft.EntityFrameworkCore;
-// using Microsoft.AspNetCore.Mvc;
-// using Factory.Models;
-// using System.Collections.Generic;
-// using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using RecipeBox.Models;
+using System.Collections.Generic;
+using System.Linq;
 
-// namespace Factory.Controllers
-// {
-//   public class EngineersController : Controller
-//   {
-//     private readonly FactoryContext _db;
+namespace RecipeBox.Controllers
+{
+  public class RecipesController : Controller
+  {
+    private readonly RecipeBoxContext _db;
 
-//     public EngineersController(FactoryContext db)
-//     {
-//       _db = db;
-//     }
+    public RecipesController(RecipeBoxContext db)
+    {
+      _db = db;
+    }
 
-//     public ActionResult Index()
-//     {
-//       return View(_db.Engineers.ToList());
-//     }
+    public ActionResult Index()
+    {
+      return View(_db.Recipe.ToList());
+    }
 
-//     public ActionResult Create()
-//     {
-//       return View();
-//     }
+    public ActionResult Create()
+    {
+      return View();
+    }
 
-//     [HttpPost]
-//     public ActionResult Create(Engineer engineer, int MachineId)
-//     {
-//       bool isUnique = true;
-//       List<Engineer> engineerList = _db.Engineers.ToList();
-//       foreach(Engineer iteration in engineerList)
-//       {
-//         if (engineer.EngineerName == iteration.EngineerName)
-//         {
-//         isUnique = false;
-//         ModelState.AddModelError("DuplicateName", engineer.EngineerName + " Is already hired");
-//         return View();
-//         }
-//       }
-//       if (isUnique)
-//       {
-//       _db.Engineers.Add(engineer);
-//       _db.SaveChanges();
-//       }
-//       return RedirectToAction("Index");
-//     }
+    [HttpPost]
+    public ActionResult Create(Recipe recipe)
+    {
+      bool isUnique = true;
+      List<Recipe> recipeList = _db.Recipe.ToList();
+      foreach(Recipe iteration in recipeList)
+      {
+        if (recipe.RecipeName == iteration.RecipeName)
+        {
+        isUnique = false;
+        ModelState.AddModelError("DuplicateName", recipe.RecipeName + " Is already hired");
+        return View();
+        }
+      }
+      if (isUnique)
+      {
+      _db.Recipe.Add(recipe);
+      _db.SaveChanges();
+      }
+      return RedirectToAction("Index");
+    }
 
 //     public ActionResult Details(int id)
 //     {
@@ -111,5 +111,5 @@
 //       _db.SaveChanges();
 //       return RedirectToAction("Index");
 //     }
-//   }
-// }
+  }
+}

@@ -1,38 +1,38 @@
-@* @{
+@{
   Layout = "_Layout";
 }
 
-@model Factory.Models.Machine
+@model RecipeBox.Models.Recipe
 
-<h2>Machine Details</h2>
+<h2>Recipe Details</h2>
 <hr />
-<h3>@Html.DisplayNameFor(model => model.MachineName): @Html.DisplayFor(model => model.MachineName)</h3>
+<h3>@Html.DisplayNameFor(model => model.RecipeName): @Html.DisplayFor(model => model.RecipeName)</h3>
 
 @if(@Model.JoinEntities.Count == 0)
 {
-  <p>This machine doesn't have any engineers licensed to work on it!</p>
+  <p>This recipe doesn't have any tags associated with it!</p>
 }
 else
 {
-  <h4>Engineers licensed to work on this machine:</h4>
+  <h4>Tags associated with this recipe:</h4>
   <ul>
   @foreach(var join in Model.JoinEntities)
   {
-    <li>@join.Engineer.EngineerName</li>
-    @using (Html.BeginForm("DeleteEngineer", "Machines"))
+    <li>@join.Recipe.RecipeName</li>
+    @using (Html.BeginForm("DeleteRecipe", "Tags"))
     {
-      @Html.Hidden("joinId", @join.LicenseId)
+      @Html.Hidden("joinId", @join.RecipeTagId)
       <input type="submit" value="Delete"/>
     }
   }
   </ul>
 }
 
-<p>@Html.ActionLink("Add an Engineer", "AddEngineer", new { id = Model.MachineId })</p>
-<p>@Html.ActionLink("Remove an Engineer", "RemoveEngineer", new { id = Model.MachineId })</p>
+<p>@Html.ActionLink("Add a Recipe", "AddRecipe", new { id = Model.RecipeId })</p>
+<p>@Html.ActionLink("Remove a Recipe", "RemoveREcipe", new { id = Model.RecipeId })</p>
 
 
-<p>@Html.ActionLink("Edit Machine", "Edit", new { id = Model.MachineId })</p>
-<p>@Html.ActionLink("Delete Machine", "Delete", new { id = Model.MachineId })</p>
+@* <p>@Html.ActionLink("Edit Tag", "Edit", new { id = Model.TagId })</p>
+<p>@Html.ActionLink("Delete Tag", "Delete", new { id = Model.TagId })</p> *@
 
-<p>@Html.ActionLink("Back to list", "Index")</p> *@
+<p>@Html.ActionLink("Back to list", "Index")</p>
