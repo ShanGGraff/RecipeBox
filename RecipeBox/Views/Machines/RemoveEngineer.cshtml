@@ -1,0 +1,17 @@
+@model Factory.Models.Machine
+
+<h2>Remove an Engineer</h2>
+
+<h4>Add an engineer for this machine: @Html.DisplayFor(model => model.MachineName)</h4>
+
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.MachineId)
+
+  @Html.Label("Select enginer")
+  @Html.DropDownList("EngineerId")
+
+  <input type="submit" value="Save" />
+}
+
+<p>@Html.ActionLink("Back to list", "Index")</p>

@@ -1,0 +1,14 @@
+@model Factory.Models.Machine
+
+<h4>Add a new machine</h4>
+
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(model => model.MachineName)
+  @Html.TextBoxFor(model => model.MachineName)
+
+  <input type="submit" value="Add new machine" class="btn btn-secondary" />
+}
+<p>@Html.ActionLink("Back to machines page", "Index")</p>

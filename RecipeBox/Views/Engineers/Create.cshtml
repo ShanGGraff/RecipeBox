@@ -1,0 +1,21 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Factory.Models.Engineer
+
+<h4>Add a new engineer</h4>
+
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(model => model.EngineerName)
+  @Html.TextBoxFor(model => model.EngineerName)
+
+  @* @Html.Label("Select machine")
+  @Html.DropDownList("MachineId") *@
+
+  <input type="submit" value="Add new engineer" class="btn btn-secondary" />
+}
+<p>@Html.ActionLink("Back to engineers page", "Index")</p>
