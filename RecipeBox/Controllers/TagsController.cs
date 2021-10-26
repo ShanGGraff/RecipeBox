@@ -1,83 +1,79 @@
-// using Microsoft.AspNetCore.Mvc.Rendering;
-// using Microsoft.EntityFrameworkCore;
-// using Microsoft.AspNetCore.Mvc;
-// using Factory.Models;
-// using System.Collections.Generic;
-// using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using RecipeBox.Models;
+using System.Collections.Generic;
+using System.Linq;
 
-// namespace Factory.Controllers
-// {
-//   public class MachinesController : Controller
-//   {
-//     private readonly FactoryContext _db;
+namespace RecipeBox.Controllers
+{
+  public class TagsController : Controller
+  {
+    private readonly RecipeBoxContext _db;
 
-//     public MachinesController(FactoryContext db)
-//     {
-//       _db = db;
-//     }
+    public TagsController(RecipeBoxContext db)
+    {
+      _db = db;
+    }
+    public ActionResult Index()
+    {
+      return View(_db.Tag.ToList());
+    }
+    public ActionResult Create()
+    {
+      return View();
+    }
 
-//     public ActionResult Index()
-//     {
-//       return View(_db.Machines.ToList());
-//     }
+    [HttpPost]
+    public ActionResult Create(Tag tag)
+    {
+      bool isUnique = true;
+      List<Tag> tagList = _db.Tag.ToList();
+      foreach(Tag iteration in tagList)
+      {
+        if (tag.TagCategories == iteration.TagCategories)
+        {
+        isUnique = false;
+        ModelState.AddModelError("DuplicateName", tag.TagCategories + " Is already taken");
+        return View();
+        }
+      }
+      if (isUnique)
+      {
+      _db.Tag.Add(tag);
+      _db.SaveChanges();
+      }
+      return RedirectToAction("Index");
+    }
 
-//     public ActionResult Create()
-//     {
-//       return View();
-//     }
+    public ActionResult Details(int id)
+    {
+      Tag thisTag = _db.Tag
+          .Include(tag => tag.JoinEntities)
+          .ThenInclude(join => join.Recipe)
+          .FirstOrDefault(tag => tag.TagId == id);
+      return View(thisTag);
+    }
 
-//     [HttpPost]
-//     public ActionResult Create(Machine machine, int EngineerId)
-//     {
-//       bool isUnique = true;
-//       List<Machine> machineList = _db.Machines.ToList();
-//       foreach(Machine iteration in machineList)
-//       {
-//         if (machine.MachineName == iteration.MachineName)
-//         {
-//         isUnique = false;
-//         ModelState.AddModelError("DuplicateName", machine.MachineName + " Is already taken");
-//         return View();
-//         }
-//       }
-//       if (isUnique)
-//       {
-//       _db.Machines.Add(machine);
-//       _db.SaveChanges();
-//       }
-//       return RedirectToAction("Index");
-//     }
+    public ActionResult Edit(int id)
+    {
+      Tag thisTag = _db.Tag.FirstOrDefault(tag => tag.TagId == id);
+      return View(thisTag);
+    }
 
-//     public ActionResult Details(int id)
-//     {
-//       Machine thisMachine = _db.Machines
-//           .Include(machine => machine.JoinEntities)
-//           .ThenInclude(join => join.Engineer)
-//           .FirstOrDefault(machine => machine.MachineId == id);
-//       return View(thisMachine);
-//     }
+    [HttpPost]
+    public ActionResult Edit(Tag tag)
+    {
+      _db.Entry(tag).State = EntityState.Modified;
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
 
-//     public ActionResult Edit(int id)
-//     {
-//       Machine thisMachine = _db.Machines.FirstOrDefault(machine => machine.MachineId == id);
-//       ViewBag.EngineerId = new SelectList(_db.Engineers, "EngineerId", "EngineerName");
-//       return View(thisMachine);
-//     }
-
-//     [HttpPost]
-//     public ActionResult Edit(Machine machine)
-//     {
-//       _db.Entry(machine).State = EntityState.Modified;
-//       _db.SaveChanges();
-//       return RedirectToAction("Index");
-//     }
-
-//     public ActionResult AddEngineer(int id)
-//     {
-//       Machine thisMachine = _db.Machines.FirstOrDefault(machine => machine.MachineId == id);
-//       ViewBag.EngineerId = new SelectList(_db.Engineers, "EngineerId", "EngineerName");
-//       return View(thisMachine);
-//     }
+    public ActionResult AddTag(int id)
+    {
+      Tag thisTag = _db.Tag.FirstOrDefault(tag => tag.TagId == id);
+      return View(thisTag);
+    }
 
 //     [HttpPost]
 //     public ActionResult AddEngineer(Machine machine, int EngineerId)
@@ -113,5 +109,5 @@
 //       _db.SaveChanges();
 //       return RedirectToAction("Index");
 //     }
-//   }
-// }
+  }
+}

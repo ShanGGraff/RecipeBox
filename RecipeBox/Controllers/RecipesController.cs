@@ -48,14 +48,14 @@ namespace RecipeBox.Controllers
       return RedirectToAction("Index");
     }
 
-//     public ActionResult Details(int id)
-//     {
-//       Engineer thisEngineer = _db.Engineers
-//           .Include(engineer => engineer.JoinEntities)
-//           .ThenInclude(join => join.Machine)
-//           .FirstOrDefault(engineer => engineer.EngineerId == id);
-//       return View(thisEngineer);
-//     }
+    public ActionResult Details(int id)
+    {
+      Recipe thisRecipe = _db.Recipe
+          .Include(recipe => recipe.JoinEntities)
+          .ThenInclude(join => join.Tag)
+          .FirstOrDefault(recipe => recipe.RecipeId == id);
+      return View(thisRecipe);
+    }
 
 //     public ActionResult Edit(int id)
 //     {

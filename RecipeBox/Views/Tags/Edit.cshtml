@@ -1,23 +1,23 @@
-@* @{
+@{
   Layout = "_Layout";
 }
 
-@model Factory.Models.Engineer
+@model RecipeBox.Models.Tag
 
 <h2>Edit</h2>
 
-<h4>Edit this Engineer: @Html.DisplayFor(model => model.EngineerName)</h4>
+<h4>Edit this Tag: @Html.DisplayFor(model => model.TagCategories)</h4>
 
 @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
 @using (Html.BeginForm())
 {
-  @Html.HiddenFor(model => model.EngineerId)
+  @Html.HiddenFor(model => model.TagId)
 
-  @Html.LabelFor(model => model.EngineerName)
-  @Html.EditorFor(model => model.EngineerName)
+  @Html.LabelFor(model => model.TagCategories)
+  @Html.EditorFor(model => model.TagCategories)
 
   <input type="submit" value="Save" />
 }
 
-<p>@Html.ActionLink("Back to engineer page", "Index")</p> *@
+<p>@Html.ActionLink("Back to tag page", "Index")</p>
