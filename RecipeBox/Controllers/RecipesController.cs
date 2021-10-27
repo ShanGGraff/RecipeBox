@@ -37,12 +37,16 @@ namespace RecipeBox.Controllers
     }
 
     [HttpPost]
-    public ActionResult Create(Recipe recipe)
+    public async Task<ActionResult> Create(Recipe recipe)
     {
       bool isUnique = true;
       List<Recipe> recipeList = _db.Recipe.ToList();
       foreach(Recipe iteration in recipeList)
       {
+        var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var currentUser = await _userManager.FindByIdAsync(userId);
+        recipe.User = currentUser;
+        
         if (recipe.RecipeName == iteration.RecipeName)
         {
         isUnique = false;
