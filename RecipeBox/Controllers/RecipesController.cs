@@ -4,21 +4,31 @@ using Microsoft.AspNetCore.Mvc;
 using RecipeBox.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace RecipeBox.Controllers
 {
+  [Authorize]
   public class RecipesController : Controller
   {
     private readonly RecipeBoxContext _db;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public RecipesController(RecipeBoxContext db)
+    public RecipesController(UserManager<ApplicationUser> userManager, RecipeBoxContext db)
     {
+      _userManager = userManager;
       _db = db;
     }
 
-    public ActionResult Index()
+    public async Task<ActionResult> Index()
     {
-      return View(_db.Recipe.ToList());
+        var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var currentUser = await _userManager.FindByIdAsync(userId);
+        var userRecipes = _db.Recipe.Where(entry => entry.User.Id == currentUser.Id).ToList();
+        return View(userRecipes);
     }
 
     public ActionResult Create()
