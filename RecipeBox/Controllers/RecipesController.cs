@@ -36,7 +36,7 @@ namespace RecipeBox.Controllers
         if (recipe.RecipeName == iteration.RecipeName)
         {
         isUnique = false;
-        ModelState.AddModelError("DuplicateName", recipe.RecipeName + " Is already hired");
+        ModelState.AddModelError("DuplicateName", recipe.RecipeName + " is already used");
         return View();
         }
       }
@@ -57,59 +57,59 @@ namespace RecipeBox.Controllers
       return View(thisRecipe);
     }
 
-//     public ActionResult Edit(int id)
-//     {
-//       Engineer thisEngineer = _db.Engineers.FirstOrDefault(engineer => engineer.EngineerId == id);
-//       return View(thisEngineer);
-//     }
+    public ActionResult Edit(int id)
+    {
+      Recipe thisRecipe = _db.Recipe.FirstOrDefault(recipe => recipe.RecipeId == id);
+      return View(thisRecipe);
+    }
 
-//     [HttpPost]
-//     public ActionResult Edit(Engineer engineer, int MachineId)
-//     {
+    [HttpPost]
+    public ActionResult Edit(Recipe recipe)
+    {
 
-//       _db.Entry(engineer).State = EntityState.Modified;
-//       _db.SaveChanges();
-//       return RedirectToAction("Index");
-//     }
-//     public ActionResult AddMachine(int id)
-//     {
-//       Engineer thisEngineer = _db.Engineers.FirstOrDefault(engineer => engineer.EngineerId == id);
-//       ViewBag.MachineId = new SelectList(_db.Machines, "MachineId", "MachineName");
-//       return View(thisEngineer);
-//     }
+      _db.Entry(recipe).State = EntityState.Modified;
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+    public ActionResult AddTag(int id)
+    {
+      Recipe thisRecipe = _db.Recipe.FirstOrDefault(recipe => recipe.RecipeId == id);
+      ViewBag.TagId = new SelectList(_db.Tag, "TagId", "TagCategories");
+      return View(thisRecipe);
+    }
 
-//     [HttpPost]
-//     public ActionResult AddMachine(Engineer engineer, int MachineId)
-//     {
-//       if (MachineId != 0)
-//       {
-//       _db.License.Add(new License() { MachineId = MachineId, EngineerId = engineer.EngineerId });
-//       }
+    [HttpPost]
+    public ActionResult AddTag(Recipe recipe, int TagId)
+    {
+      if (TagId != 0)
+      {
+      _db.RecipeTag.Add(new RecipeTag() { TagId = TagId, RecipeId = recipe.RecipeId });
+      }
 
-//       _db.SaveChanges();
-//       return RedirectToAction("Index");
-//     }
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
 
-//     public ActionResult Delete(int id)
-//     {
-//       Engineer thisEngineer = _db.Engineers.FirstOrDefault(engineer => engineer.EngineerId == id);
-//       return View(thisEngineer);
-//     }
+    public ActionResult Delete(int id)
+    {
+      Recipe thisRecipe = _db.Recipe.FirstOrDefault(recipe => recipe.RecipeId == id);
+      return View(this);
+    }
 
-//     [HttpPost, ActionName("Delete")]
-//     public ActionResult DeleteConfirmed(int id)
-//     {
-//       Engineer thisEngineer = _db.Engineers.FirstOrDefault(engineer => engineer.EngineerId == id);
-//       _db.Engineers.Remove(thisEngineer);
-//       _db.SaveChanges();
-//       return RedirectToAction("Index");
-//     }
-//     public ActionResult DeleteMachine(int joinId)
-//     {
-//       License joinEntry = _db.License.FirstOrDefault(entry => entry.LicenseId == joinId);
-//       _db.License.Remove(joinEntry);
-//       _db.SaveChanges();
-//       return RedirectToAction("Index");
-//     }
+    [HttpPost, ActionName("Delete")]
+    public ActionResult DeleteConfirmed(int id)
+    {
+      Recipe thisRecipe = _db.Recipe.FirstOrDefault(recipe => recipe.RecipeId == id);
+      _db.Recipe.Remove(thisRecipe);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+    public ActionResult DeleteTag(int joinId)
+    {
+      RecipeTag joinEntry = _db.RecipeTag.FirstOrDefault(entry => entry.RecipeTagId == joinId);
+      _db.RecipeTag.Remove(joinEntry);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
   }
 }

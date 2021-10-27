@@ -74,40 +74,46 @@ namespace RecipeBox.Controllers
       Tag thisTag = _db.Tag.FirstOrDefault(tag => tag.TagId == id);
       return View(thisTag);
     }
+    public ActionResult AddRecipe(int id)
+    {
+      Tag thisTag = _db.Tag.FirstOrDefault(tag => tag.TagId == id);
+      ViewBag.RecipeId = new SelectList(_db.Recipe, "RecipeId", "RecipeName");
+      return View(thisTag);
+    }
+    
+    [HttpPost]
+    public ActionResult AddRecipe(Tag tag, int RecipeId)
+      {
+        if (RecipeId != 0)
+        {
+        _db.RecipeTag.Add(new RecipeTag() { RecipeId = RecipeId, TagId = tag.TagId });
+        }
 
-//     [HttpPost]
-//     public ActionResult AddEngineer(Machine machine, int EngineerId)
-//     {
-//       if (EngineerId != 0)
-//       {
-//       _db.License.Add(new License() { EngineerId = EngineerId, MachineId = machine.MachineId });
-//       }
+        _db.SaveChanges();
+        return RedirectToAction("Index");
+      }
 
-//       _db.SaveChanges();
-//       return RedirectToAction("Index");
-//     }
+    public ActionResult Delete(int id)
+    {
+      Tag thisTag = _db.Tag.FirstOrDefault(tag => tag.TagId == id);
+      return View(thisTag);
+    }
 
-//     public ActionResult Delete(int id)
-//     {
-//       Machine thisMachine = _db.Machines.FirstOrDefault(machine => machine.MachineId == id);
-//       return View(thisMachine);
-//     }
+    [HttpPost, ActionName("Delete")]
+    public ActionResult DeleteConfirmed(int id)
+    {
+      Tag thisTag = _db.Tag.FirstOrDefault(tag => tag.TagId == id);
+      _db.Tag.Remove(thisTag);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
 
-//     [HttpPost, ActionName("Delete")]
-//     public ActionResult DeleteConfirmed(int id)
-//     {
-//       Machine thisMachine = _db.Machines.FirstOrDefault(machine => machine.MachineId == id);
-//       _db.Machines.Remove(thisMachine);
-//       _db.SaveChanges();
-//       return RedirectToAction("Index");
-//     }
-
-//     public ActionResult DeleteEngineer(int joinId)
-//     {
-//       License joinEntry = _db.License.FirstOrDefault(entry => entry.LicenseId == joinId);
-//       _db.License.Remove(joinEntry);
-//       _db.SaveChanges();
-//       return RedirectToAction("Index");
-//     }
+    public ActionResult DeleteRecipe(int joinId)
+    {
+      RecipeTag joinEntry = _db.RecipeTag.FirstOrDefault(entry => entry.RecipeTagId == joinId);
+      _db.RecipeTag.Remove(joinEntry);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
   }
 }

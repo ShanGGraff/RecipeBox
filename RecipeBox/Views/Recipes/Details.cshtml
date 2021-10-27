@@ -8,6 +8,10 @@
 <hr />
 <h3>@Html.DisplayNameFor(model => model.RecipeName): @Html.DisplayFor(model => model.RecipeName)</h3>
 
+<h3>@Html.DisplayNameFor(model => model.RecipeIngredients): @Html.DisplayFor(model => model.RecipeIngredients)</h3>
+
+<h3>@Html.DisplayNameFor(model => model.RecipeInstructions): @Html.DisplayFor(model => model.RecipeInstructions)</h3>
+
 @if(@Model.JoinEntities.Count == 0)
 {
   <p>This recipe doesn't have any tags associated with it!</p>
@@ -28,11 +32,8 @@ else
   </ul>
 }
 
-<p>@Html.ActionLink("Add a Recipe", "AddRecipe", new { id = Model.RecipeId })</p>
-<p>@Html.ActionLink("Remove a Recipe", "RemoveREcipe", new { id = Model.RecipeId })</p>
+<p>@Html.ActionLink("Add a Tag", "AddTag", new { id = Model.RecipeId })</p>
 
-
-@* <p>@Html.ActionLink("Edit Tag", "Edit", new { id = Model.TagId })</p>
-<p>@Html.ActionLink("Delete Tag", "Delete", new { id = Model.TagId })</p> *@
-
+<p>@Html.ActionLink("Edit Recipe", "Edit", new { id = Model.RecipeId })</p>
+<p>@Html.ActionLink("Delete Recipe", "Delete", new { id = Model.RecipeId })</p>
 <p>@Html.ActionLink("Back to list", "Index")</p>

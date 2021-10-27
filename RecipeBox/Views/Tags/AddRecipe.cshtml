@@ -2,18 +2,18 @@
   Layout = "_Layout";
 }
 
-@model RecipeBox.Models.Recipe
+@model RecipeBox.Models.Tag
 
 <h2>Add a recipe</h2>
 
-<h4>Add a recipe for this tag: @Html.DisplayFor(model => model.RecipeName)</h4>
+<h4>Add a recipe for this tag: @Html.DisplayFor(model => model.TagCategories)</h4>
 
 @using (Html.BeginForm())
 {
-  @Html.HiddenFor(model => model.RecipeId)
+  @Html.HiddenFor(model => model.TagId)
 
-  @Html.Label("Select tag")
-  @Html.DropDownList("TagId")
+  @Html.Label("Select recipe")
+  @Html.DropDownList("RecipeId")
 
   <input type="submit" value="Save" />
 }
