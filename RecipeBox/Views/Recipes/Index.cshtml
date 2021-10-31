@@ -21,5 +21,21 @@ else
   <h3>No recipes have been added yet!</h3>
 }
 
+<ul>
+
+@foreach (Recipe recipe in Model)
+{
+
+  <li>@Html.ActionLink($"{recipe.RecipeRating}", "Details", new { id = recipe.RecipeId })</li>
+
+}
+</ul>
+
+@using (Html.BeginForm())
+  {
+    <p>Find By ingredient: @Html.TextBox("SearchString")
+      <input type="submit" value="Search" /></p>
+  }
+
 <p>@Html.ActionLink("Add new recipe", "Create")</p>
 <p>@Html.ActionLink("Back to home", "Index", "Home")</p>
