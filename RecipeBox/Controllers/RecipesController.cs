@@ -23,26 +23,38 @@ namespace RecipeBox.Controllers
       _db = db;
     }
 
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string searchString)
     {
         var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var currentUser = await _userManager.FindByIdAsync(userId);
-        List<Recipe> allRecipes = _db.Recipe.OrderBy(m => m.RecipeRating).ToList();
-        return View(allRecipes);
+        // List<Recipe> allRecipes = _db.Recipe.OrderBy(m => m.RecipeRating).ToList();
+        // return View(allRecipes);
 
         // var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        // var currentUser = await _userManager.FindByIdAsync(userId);
+        // vaR currentUserR= await _userManager.FindByIdAsync(uerId);
         // List<Recipe> allRecipes = _db.Recipe.OrderBy(m => m.RecipeRating).ToList();
         // ViewBag.A = allRecipes;
         // return View();
-        
+
+         IQueryable<Recipe> userRecipes =
+         //research this
+          _db
+            .Recipe
+            .Where(entry => entry.User.Id == currentUser.Id)
+            .OrderByDescending(rate => rate.RecipeRating);
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                userRecipes =
+                    userRecipes
+                        .Where(rate => rate.RecipeIngredients.Contains(searchString));
+            }
+            return View(userRecipes.ToList());
     }
-    [AllowAnonymous]
     public ActionResult Create()
     {
       return View();
     }
-
+//
     [HttpPost]
     public async Task<ActionResult> Create(Recipe recipe)
     {
