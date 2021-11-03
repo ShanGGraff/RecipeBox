@@ -23,7 +23,7 @@ namespace RecipeBox.Controllers
       _db = db;
     }
 
-    public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index()
     {
         var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var currentUser = await _userManager.FindByIdAsync(userId);
@@ -37,7 +37,7 @@ namespace RecipeBox.Controllers
         // return View();
         
     }
-
+    [AllowAnonymous]
     public ActionResult Create()
     {
       return View();
